@@ -1,3 +1,6 @@
+vim.cmd.let "g:gruvbox_material_background = 'medium'"
+vim.cmd.let "g:gruvbox_material_foreground = 'mixed'"
+-- vim.cmd.let "g:gruvbox_material_better_performance = 1"
 --[[
 
 =====================================================================
@@ -328,11 +331,14 @@ require('lazy').setup({
       spec = {
         { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
+        { '<leader>f', group = '[F]ind' },
+        { '<leader>g', group = '[G]it' },
+        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>o', group = '[O]pen' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
+        { '<leader>t', group = '[T]est' },
         { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
   },
@@ -424,6 +430,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+
+      vim.keymap.set('n', '<leader>st', function()
+        vim.cmd 'TodoTelescope'
+      end, { desc = '[S]earch [T]odo' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -618,7 +628,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
         basedpyright = {
           analysis = {
@@ -626,11 +636,34 @@ require('lazy').setup({
             useLibraryCodeForTypes = true,
             diagnosticMode = 'workspace',
             logLevel = 'Trace',
-            -- typeCheckingMode = "basic",
+            typeCheckingMode = 'standard',
           },
+          on_attach = function(client)
+            -- Disable document formatting for basedpyright
+            client.server_capabilities.document_formatting = false
+            client.server_capabilities.document_range_formatting = false
+          end,
         },
-        ruff = {},
-        -- rust_analyzer = {},
+
+        -- cyright = {},
+
+        ruff = {
+          on_attach = function(client)
+            -- Enable only diagnostics and code actions for ruff
+            client.server_capabilities.document_formatting = false
+            client.server_capabilities.document_range_formatting = false
+            client.server_capabilities.hoverProvider = false
+            client.server_capabilities.completionProvider = false
+            client.server_capabilities.signatureHelpProvider = false
+            client.server_capabilities.definitionProvider = false
+            client.server_capabilities.typeDefinitionProvider = false
+            client.server_capabilities.referencesProvider = false
+            client.server_capabilities.documentHighlightProvider = false
+            client.server_capabilities.documentSymbolProvider = false
+            client.server_capabilities.workspaceSymbolProvider = false
+            client.server_capabilities.renameProvider = false
+          end,
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -693,7 +726,7 @@ require('lazy').setup({
     cmd = { 'ConformInfo' },
     keys = {
       {
-        '<leader>f',
+        '<leader>rf',
         function()
           require('conform').format { async = true, lsp_format = 'fallback' }
         end,
@@ -853,31 +886,31 @@ require('lazy').setup({
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     --'folke/tokyonight.nvim',
     -- 'rebelot/kanagawa.nvim',
-    'ellisonleao/gruvbox.nvim',
+    'sainnhe/gruvbox-material',
     opts = {
-      transparent = true,
-      terminal_colors = true,
-      undercurl = true,
-      underline = true,
-      bold = true,
-      italic = {
-        strings = true,
-        emphasis = true,
-        comments = true,
-        operators = false,
-        folds = true,
-      },
-      strikethrough = true,
-      invert_selection = false,
-      invert_signs = false,
-      invert_tabline = false,
-      invert_intend_guides = false,
-      inverse = true, -- invert background for search, diffs, statuslines and errors
-      contrast = '', -- can be "hard", "soft" or empty string
-      palette_overrides = {},
-      overrides = {},
-      dim_inactive = false,
-      transparent_mode = false,
+      -- transparent = true,
+      -- terminal_colors = true,
+      -- undercurl = true,
+      -- underline = true,
+      -- bold = true,
+      -- italic = {
+      --   strings = true,
+      --   emphasis = true,
+      --   comments = true,
+      --   operators = false,
+      --   folds = true,
+      -- },
+      -- strikethrough = true,
+      -- invert_selection = false,
+      -- invert_signs = false,
+      -- invert_tabline = false,
+      -- invert_intend_guides = false,
+      -- inverse = true, -- invert background for search, diffs, statuslines and errors
+      -- contrast = '', -- can be "hard", "soft" or empty string
+      -- palette_overrides = {},
+      -- overrides = {},
+      -- dim_inactive = false,
+      -- transparent_mode = false,
       -- styles = {
       --   sidebars = 'transparent',
       --   floats = 'transparent',
@@ -892,7 +925,7 @@ require('lazy').setup({
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       -- vim.cmd.colorscheme 'tokyonight-night'
-      vim.cmd.colorscheme 'gruvbox'
+      vim.cmd.colorscheme 'gruvbox-material'
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
@@ -900,7 +933,7 @@ require('lazy').setup({
   },
 
   -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = true } },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -911,7 +944,22 @@ require('lazy').setup({
       --  - va)  - [V]isually select [A]round [)]paren
       --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
       --  - ci'  - [C]hange [I]nside [']quote
-      require('mini.ai').setup { n_lines = 500 }
+      require('mini.ai').setup {
+        n_lines = 500,
+        custom_textobjects = {
+          s = { -- 's' for snake_case
+            {
+              -- Match any word character followed by optional _word sequences
+              -- %f[%w] is a frontier pattern that matches position between non-word and word char
+              -- This ensures we start at the beginning of a word
+              '%f[%w][%w]+[_%w]*[%w]+',
+              -- Extract the entire match for 'a', same for 'i'
+              -- (no difference between 'a' and 'i' in this case)
+              '^().*()$',
+            },
+          },
+        },
+      }
 
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
@@ -949,13 +997,47 @@ require('lazy').setup({
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
-        enable = true,
+        enable = false,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.
         additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
+      -- NOTE: I could not for the life of me get this to work, and it took a long time.
+      -- Do not attempt to fix unless you have a day off.
+      -- textobjects = {
+      --   select = {
+      --     enable = true,
+      --     lookahead = true,
+      --     keymaps = {
+      --       ['iv'] = { query = '(indentifier) @variable', desc = 'Select full variable name' },
+      --
+      --       -- Function selections
+      --       ['af'] = { query = '@function.outer', desc = 'Select outer part of a function region' },
+      --       ['if'] = { query = '@function.inner', desc = 'Select inner part of a function region' },
+      --
+      --       -- Class selections
+      --       ['ac'] = { query = '@class.outer', desc = 'Select outer part of a class region' },
+      --       ['ic'] = { query = '@class.inner', desc = 'Select inner part of a class region' },
+      --     },
+      --     selection_modes = {
+      --       ['@parameter.outer'] = 'v', -- charwise
+      --       ['@function.outer'] = 'V', -- linewise
+      --       ['@class.outer'] = '<c-v>', -- blockwise
+      --     },
+      --     include_surrounding_whitespace = false,
+      --   },
+      -- lsp_interop = {
+      --   enable = true,
+      --   border = 'none',
+      --   floating_preview_opts = {},
+      --   peek_definition_code = {
+      --     ['<leader>df'] = '@function.outer',
+      --     ['<leader>dF'] = '@class.outer',
+      --   },
+      -- },
+      -- },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -987,16 +1069,6 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   { import = 'custom.plugins' },
-  -- { 'nvim-neotest/neotest-python' },
-  -- {
-  --   'nvim-neotest/neotest',
-  --   dependencies = {
-  --     'nvim-neotest/nvim-nio',
-  --     'nvim-lua/plenary.nvim',
-  --     'antoinemadec/FixCursorHold.nvim',
-  --     'nvim-treesitter/nvim-treesitter',
-  --   },
-  -- },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1022,13 +1094,15 @@ require('lazy').setup({
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 require 'user.keybindings'
-vim.lsp.set_log_level 'debug'
+-- vim.lsp.set_log_level 'debug'
 vim.o.shiftwidth = 4
 vim.o.tabstop = 8
 vim.o.softtabstop = 0
 
-require('neotest').setup {
-  adapters = {
-    require 'neotest-python',
-  },
-}
+require('telescope').load_extension 'luasnip'
+require('luasnip.loaders.from_snipmate').load { paths = '~/.config/nvim/snippets' }
+-- bugfix?
+vim.keymap.set('n', 's', '<Nop>', { noremap = true })
+
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
