@@ -1,0 +1,27 @@
+snippet dbg
+	logger.debug(f"{${0}}")
+
+snippet bug
+	print("DEBUG:", ${0})
+
+snippet db0
+	logger.debug("0")
+
+snippet here
+	logger.debug("here")
+
+snippet fst
+	f"{$0}"
+
+snippet printf
+	print(f"{$0=}")
+
+snippet defkwa
+	def ${0}(*args, **kwargs):
+		pass
+
+snippet trace
+    @lambda f: lambda *args, **kwargs: logger.debug(f.__name__) and f(*args, **kwargs)
+	
+
+
