@@ -227,7 +227,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
-    vim.hl.on_yank()
+    vim.highlight.on_yank()
   end,
 })
 
@@ -388,6 +388,12 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      {
+        'nvim-telescope/telescope-live-grep-args.nvim',
+        -- This will not install any breaking changes.
+        -- For major updates, this must be adjusted manually.
+        version = '^1.0.0',
+      },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
@@ -430,12 +436,14 @@ require('lazy').setup({
             require('telescope.themes').get_dropdown(),
           },
         },
+
+        require('telescope').load_extension 'live_grep_args',
       }
 
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
-      -- pcall(require('telescope').load_extension, 'luasnip')
+      pcall(require('telescope').load_extension, 'luasnip')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -496,8 +504,19 @@ require('lazy').setup({
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'mason-org/mason.nvim', opts = {} },
-      'mason-org/mason-lspconfig.nvim',
-      'WhoIsSethDaniel/mason-tool-installer.nvim',
+      {
+        'mason-org/mason-lspconfig.nvim',
+        opts = {
+          ensure_enabled = { 'basedpyright', 'ruff', 'lua_ls', 'rust_analyzer', 'clangd' },
+          automatic_enable = true,
+        },
+        dependencies = {
+          'mason-org/mason.nvim',
+          'neovim/nvim-lspconfig',
+        },
+      },
+
+      -- 'WhoIsSethDaniel/mason-tool-installer.nvim',
 
       -- Useful status updates for LSP.
       { 'j-hui/fidget.nvim', opts = {} },
@@ -550,40 +569,42 @@ require('lazy').setup({
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-
-          -- Find references for the word under your cursor.
-          map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-
-          -- Jump to the implementation of the word under your cursor.
-          --  Useful when your language has ways of declaring types without an actual implementation.
-          map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-
-          -- Jump to the definition of the word under your cursor.
-          --  This is where a variable was first declared, or where a function is defined, etc.
-          --  To jump back, press <C-t>.
-          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-
-          -- WARN: This is not Goto Definition, this is Goto Declaration.
-          --  For example, in C this would take you to the header.
-          map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
-          -- Fuzzy find all the symbols in your current document.
-          --  Symbols are things like variables, functions, types, etc.
-          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
-
-          -- Fuzzy find all the symbols in your current workspace.
-          --  Similar to document symbols, except searches over your entire project.
-          map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
-
-          -- Jump to the type of the word under your cursor.
-          --  Useful when you're not sure what type a variable is and you want to see
-          --  the definition of its *type*, not where it was *defined*.
-          map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
+          -- map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          --
+          -- -- Execute a code action, usually your cursor needs to be on top of an error
+          -- -- or a suggestion from your LSP for this to activate.
+          map('ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
+          --
+          -- -- Find references for the word under your cursor.
+          map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+          --
+          -- -- Jump to the implementation of the word under your cursor.
+          -- --  Useful when your language has ways of declaring types without an actual implementation.
+          -- map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          -- map('gri', vim.lsp.implementations, '[G]oto [I]mplementation')
+          -- -- Jump to the definition of the word under your cursor.
+          -- --  This is where a variable was first declared, or where a function is defined, etc.
+          -- --  To jump back, press <C-t>.
+          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          --
+          -- -- WARN: This is not Goto Definition, this is Goto Declaration.
+          -- --  For example, in C this would take you to the header.
+          -- map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          --
+          map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+          -- -- Fuzzy find all the symbols in your current document.
+          -- --  Symbols are things like variables, functions, types, etc.
+          -- map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+          --
+          -- -- Fuzzy find all the symbols in your current workspace.
+          -- --  Similar to document symbols, except searches over your entire project.
+          -- map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
+          --
+          -- -- Jump to the type of the word under your cursor.
+          -- --  Useful when you're not sure what type a variable is and you want to see
+          -- --  the definition of its *type*, not where it was *defined*.
+          -- map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
 
           -- This function resolves a difference between neovim nightly (version 0.11) and stable (version 0.10)
           ---@param client vim.lsp.Client
@@ -631,11 +652,11 @@ require('lazy').setup({
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
-          if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
-          end
+          -- if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
+          --   map('<leader>th', function()
+          --     vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
+          --   end, '[T]oggle Inlay [H]ints')
+          -- end
         end,
       })
 
@@ -672,7 +693,7 @@ require('lazy').setup({
       --  By default, Neovim doesn't support everything that is in the LSP specification.
       --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
       --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
-      local capabilities = require('blink.cmp').get_lsp_capabilities()
+      -- local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -683,44 +704,51 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        -- clangd = {},
-        -- gopls = {},
-        basedpyright = {
-          analysis = {
-            autoSearchPaths = true,
-            useLibraryCodeForTypes = true,
-            diagnosticMode = 'workspace',
-            logLevel = 'Trace',
-            -- typeCheckingMode = "basic",
-          },
-        },
-        ruff = {},
-        -- rust_analyzer = {},
-        -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-        --
-        -- Some languages (like typescript) have entire language plugins that can be useful:
-        --    https://github.com/pmizio/typescript-tools.nvim
-        --
-        -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
-        --
-
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
-      }
+      -- local servers = {
+      --   clangd = {},
+      --   -- gopls = {},
+      --   basedpyright = {
+      --     settings = {
+      --       autoSearchPaths = true,
+      --       useLibraryCodeForTypes = true,
+      --       diagnosticMode = 'workspace',
+      --       typeCheckingMode = 'standard',
+      --     },
+      --   },
+      --   ruff = {},
+      --   rust_analyzer = {},
+      --   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
+      --   --
+      --   -- Some languages (like typescript) have entire language plugins that can be useful:
+      --   --    https://github.com/pmizio/typescript-tools.nvim
+      --   --
+      --   -- But for many setups, the LSP (`ts_ls`) will work just fine
+      --   ts_ls = {},
+      --   --
+      --   --
+      --   azure_pipelines_ls = {
+      --     cmd = { 'azure-pipelines-language-server', '--stdio' },
+      --     filetypes = { 'yaml' },
+      --     root_dir = require('lspconfig').util.root_pattern 'azure-pipelines.yml',
+      --     single_file_support = true,
+      --     settings = {},
+      --   },
+      --
+      --   lua_ls = {
+      --     -- cmd = { ... },
+      --     -- filetypes = { ... },
+      --     -- capabilities = {},
+      --     settings = {
+      --       Lua = {
+      --         completion = {
+      --           callSnippet = 'Replace',
+      --         },
+      --         -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+      --         -- diagnostics = { disable = { 'missing-fields' } },
+      --       },
+      --     },
+      --   },
+      -- }
 
       -- Ensure the servers and tools above are installed
       --
@@ -735,26 +763,32 @@ require('lazy').setup({
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      -- local ensure_installed = vim.tbl_keys(servers or {})
+      -- vim.list_extend(ensure_installed, {
+      --   'stylua', -- Used to format Lua code
+      --   'bash-language-server',
+      --   'ruff',
+      --   'clangd',
+      --   'azure-pipelines-language-server',
+      -- })
+      -- require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
-      require('mason-lspconfig').setup {
-        ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
-      }
+      -- require('mason-lspconfig').setup {
+      --   ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+      --   automatic_installation = false,
+      --   automatic_enable = true,
+      --
+      --   handlers = {
+      --     function(server_name)
+      --       local server = servers[server_name] or {}
+      --       -- This handles overriding only values explicitly passed
+      --       -- by the server configuration above. Useful when disabling
+      --       -- certain features of an LSP (for example, turning off formatting for ts_ls)
+      --       server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      --       require('lspconfig')[server_name].setup(server)
+      --     end,
+      --   },
+      -- }
     end,
   },
 
@@ -857,7 +891,7 @@ require('lazy').setup({
         -- <c-k>: Toggle signature help
         --
         -- See :h blink-cmp-config-keymap for defining your own keymap
-        preset = 'default',
+        preset = 'enter',
 
         -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
         --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
@@ -1054,16 +1088,6 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-  -- { 'nvim-neotest/neotest-python' },
-  -- {
-  --   'nvim-neotest/neotest',
-  --   dependencies = {
-  --     'nvim-neotest/nvim-nio',
-  --     'nvim-lua/plenary.nvim',
-  --     'antoinemadec/FixCursorHold.nvim',
-  --     'nvim-treesitter/nvim-treesitter',
-  --   },
-  -- },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1086,16 +1110,25 @@ require('lazy').setup({
   },
 })
 
+vim.lsp.config('basedpyright', {
+  settings = {
+    basedpyright = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'workspace',
+        typeCheckingMode = 'standard',
+      },
+    },
+  },
+})
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 require 'user.keybindings'
-vim.lsp.set_log_level 'debug'
+-- vim.lsp.set_log_level 'debug'
 vim.o.shiftwidth = 4
 vim.o.tabstop = 8
 vim.o.softtabstop = 0
 
-require('neotest').setup {
-  adapters = {
-    require 'neotest-python',
-  },
-}
+-- Generate comment for current line

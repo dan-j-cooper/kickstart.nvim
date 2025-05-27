@@ -10,13 +10,13 @@ vim.keymap.set('n', '<leader>spd', ':Telescope neovim-project discover<CR>', { d
 vim.keymap.set('n', '<leader>gg', ':Neogit<CR>', { desc = 'Neo[G]it [G]o', noremap = true, silent = true })
 
 -- refactor.nvim
-vim.keymap.set('x', '<leader>re', ':Refactor extract ')
-vim.keymap.set('x', '<leader>rf', ':Refactor extract_to_file ')
-vim.keymap.set('x', '<leader>rv', ':Refactor extract_var ')
-vim.keymap.set({ 'n', 'x' }, '<leader>ri', ':Refactor inline_var')
-vim.keymap.set('n', '<leader>rI', ':Refactor inline_func')
-vim.keymap.set('n', '<leader>rb', ':Refactor extract_block')
-vim.keymap.set('n', '<leader>rbf', ':Refac{tor extract_block_to_file')
+vim.keymap.set('x', '<leader>re', ':Refactor extract ', { desc = '[R]efactor [e]xtract' })
+vim.keymap.set('x', '<leader>rf', ':Refactor extract_to_file ', { desc = '[R]efactor extract to [f]ile' })
+vim.keymap.set('x', '<leader>rv', ':Refactor extract_var ', { desc = '[R]efactor extract [v]ar' })
+vim.keymap.set({ 'n', 'x' }, '<leader>ri', ':Refactor inline_var', { desc = '[R]efactor [i]nline var' })
+vim.keymap.set('n', '<leader>rI', ':Refactor inline_func', { desc = '[R]efactor [i]nline func' })
+vim.keymap.set('n', '<leader>rb', ':Refactor extract_block', { desc = '[R]efactor extract [b]lock' })
+vim.keymap.set('n', '<leader>rbf', ':Refactor extract_block_to_file', { desc = '[R]efactor extract [b]lock to [f]ile' })
 
 vim.keymap.set('n', '<leader>tf', ':Neotest run<CR>', { desc = '[T]est [F]ile' })
 vim.keymap.set('n', '<leader>ts', ':Neotest summary<CR>', { desc = '[T]est [S]ummary' })

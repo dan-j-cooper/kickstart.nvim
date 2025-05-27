@@ -4,6 +4,15 @@
 -- See the kickstart.nvim README for more information
 return {
   {
+    'kkoomen/vim-doge',
+  },
+  {
+    'sedm0784/vim-you-autocorrect',
+  },
+  {
+    'subnut/nvim-ghost.nvim',
+  },
+  {
     'coffebar/neovim-project',
     opts = {
       projects = { -- define project roots
@@ -41,9 +50,6 @@ return {
     -- Optional dependencies
     dependencies = { { 'echasnovski/mini.icons', opts = {} } },
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
-  },
-  {
-    'nvim-neotest/neotest-python',
   },
   {
     'folke/trouble.nvim',
