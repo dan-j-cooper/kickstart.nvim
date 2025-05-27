@@ -91,11 +91,11 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- vim.cmd 'normal! y'
 -- local command = vim.fn.getreg '"'
 -- vim.cmd(command)
-local function run_vim_command()
-  vim.cmd 'normal! y'
-  local txt = vim.fn.getreg '"'
-  vim.cmd(':"' .. txt .. '"')
-end
+-- local function run_vim_command()
+--   vim.cmd 'normal! y'
+--   local txt = vim.fn.getreg '"'
+--   vim.cmd(':"' .. txt .. '"')
+-- end
 
 vim.keymap.set('x', '<leader>es', ":<C-u>'<,'>w !sh<CR>", { noremap = true, silent = true })
 --vim.keymap.set('x', '<leader>ec', run_vim_command, { noremap = true, silent = false })
@@ -242,7 +242,7 @@ vim.opt.rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+require('lazy').setup ({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -416,7 +416,7 @@ require('lazy').setup({
       -- Enable Telescope extensions if they are installed
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
-      -- pcall(require('telescope').load_extension, 'luasnip')
+      pcall(require('telescope').load_extension, 'luasnip')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -638,15 +638,11 @@ require('lazy').setup({
             logLevel = 'Trace',
             typeCheckingMode = 'standard',
           },
-          -- filetypes = {
-          --   'python',
-          --   'pyrex',
-          -- },
-          -- on_attach = function(client)
-          --   -- Disable document formatting for basedpyright
-          --   client.server_capabilities.document_formatting = false
-          --   client.server_capabilities.document_range_formatting = false
-          -- end,
+          on_attach = function(client)
+            -- Disable document formatting for basedpyright
+            client.server_capabilities.document_formatting = false
+            client.server_capabilities.document_range_formatting = false
+          end,
         },
 
         -- cyright = {},
@@ -1037,16 +1033,15 @@ require('lazy').setup({
       --     },
       --     include_surrounding_whitespace = false,
       --   },
-      -- lsp_interop = {
-      --   enable = true,
-      --   border = 'none',
-      --   floating_preview_opts = {},
-      --   peek_definition_code = {
-      --     ['<leader>df'] = '@function.outer',
-      --     ['<leader>dF'] = '@class.outer',
-      --   },
-      -- },
-      -- },
+      lsp_interop = {
+        enable = true,
+        border = 'none',
+        floating_preview_opts = {},
+        peek_definition_code = {
+          ['<leader>df'] = '@function.outer',
+          ['<leader>dF'] = '@class.outer',
+        },
+      },
     },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
@@ -1078,7 +1073,6 @@ require('lazy').setup({
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   { import = 'custom.plugins' },
-}, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
@@ -1098,6 +1092,7 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
+},
 })
 
 -- The line beneath this is called `modeline`. See `:help modeline`

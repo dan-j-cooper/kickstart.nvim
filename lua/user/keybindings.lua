@@ -22,43 +22,43 @@ vim.keymap.set('n', '<leader>rbf', ':Refac{tor extract_block_to_file')
 -- vim.keymap.set('n', '<leader>tf', ':Neotest run<CR>', { desc = '[T]est [F]ile' })
 -- vim.keymap.set('n', '<leader>ts', ':Neotest summary<CR>', { desc = '[T]est [S]ummary' })
 -- vim.keymap.set('n', '<leader>tr', ':Neotest result<CR>', { desc = '[T]est [R]eport' })
-local neotest = require 'neotest'
-
-vim.keymap.set('n', '<leader>tt', function()
-  neotest.run.run()
-end, { desc = 'Run nearest test' })
-
-vim.keymap.set('n', '<leader>tf', function()
-  neotest.run.run(vim.fn.expand '%')
-end, { desc = 'Run all tests in file' })
-
-vim.keymap.set('n', '<leader>ts', function()
-  neotest.summary.toggle()
-end, { desc = 'Toggle test summary' })
-
-vim.keymap.set('n', '<leader>to', function()
-  neotest.output.open { enter = true }
-end, { desc = 'Show test output' })
-
-vim.keymap.set('n', '<leader>tO', function()
-  neotest.output_panel.toggle()
-end, { desc = 'Toggle output panel' })
-
-vim.keymap.set('n', '<leader>tn', function()
-  neotest.jump.next { status = 'failed' }
-end, { desc = 'Jump to next failed test' })
-
-vim.keymap.set('n', '<leader>tp', function()
-  neotest.jump.prev { status = 'failed' }
-end, { desc = 'Jump to previous failed test' })
-
-vim.keymap.set('n', '<leader>ta', function()
-  neotest.run.attach()
-end, { desc = 'Attach to nearest test' })
-
-vim.keymap.set('n', '<leader>tS', function()
-  neotest.run.stop()
-end, { desc = 'Stop nearest test' })
+-- local neotest = require 'neotest'
+--
+-- vim.keymap.set('n', '<leader>tt', function()
+--   neotest.run.run()
+-- end, { desc = 'Run nearest test' })
+--
+-- vim.keymap.set('n', '<leader>tf', function()
+--   neotest.run.run(vim.fn.expand '%')
+-- end, { desc = 'Run all tests in file' })
+--
+-- vim.keymap.set('n', '<leader>ts', function()
+--   neotest.summary.toggle()
+-- end, { desc = 'Toggle test summary' })
+--
+-- vim.keymap.set('n', '<leader>to', function()
+--   neotest.output.open { enter = true }
+-- end, { desc = 'Show test output' })
+--
+-- vim.keymap.set('n', '<leader>tO', function()
+--   neotest.output_panel.toggle()
+-- end, { desc = 'Toggle output panel' })
+--
+-- vim.keymap.set('n', '<leader>tn', function()
+--   neotest.jump.next { status = 'failed' }
+-- end, { desc = 'Jump to next failed test' })
+--
+-- vim.keymap.set('n', '<leader>tp', function()
+--   neotest.jump.prev { status = 'failed' }
+-- end, { desc = 'Jump to previous failed test' })
+--
+-- vim.keymap.set('n', '<leader>ta', function()
+--   neotest.run.attach()
+-- end, { desc = 'Attach to nearest test' })
+--
+-- vim.keymap.set('n', '<leader>tS', function()
+--   neotest.run.stop()
+-- end, { desc = 'Stop nearest test' })
 
 -- snippets
 vim.keymap.set('n', '<leader>sc', ':Telescope luasnip<CR>')
@@ -99,6 +99,7 @@ vim.keymap.set('n', '<leader>fr', '<Plug>CtrlSFPrompt', { desc = 'find and repla
 
 -- tardis
 vim.keymap.set('n', '<leader>gt', ':Tardis <CR>', { desc = 'git time machine' })
+vim.keymap.set('n', '<leader>fr', '<Plug>CtrlSFPrompt', { desc = 'find and replace' })
 
 -- portal jumplist
 vim.keymap.set('n', '<leader>o', '<cmd>Portal jumplist backward<cr>')
@@ -106,6 +107,3 @@ vim.keymap.set('n', '<leader>i', '<cmd>Portal jumplist forward<cr>')
 
 -- set default fold
 vim.opt.foldlevel = 5
-
--- TODO: fix this
-vim.fn.setreg('f', 'ea=}"bbif"{')

@@ -4,6 +4,38 @@
 -- See the kickstart.nvim README for more information
 return {
   {
+    'nvim-neotest/neotest',
+    dependencies = {
+      'nvim-neotest/nvim-nio',
+      'nvim-lua/plenary.nvim',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    opts = {
+      adapters = {
+        ['neotest-python'] = {
+          dap = { justMyCode = false },
+          args = { '--log-level', 'DEBUG', '--verbose', '-s' },
+          runner = 'pytest',
+          -- is_test_file = function(file_path)
+          --   if string.find(file_path, 'test') and vim.endswith(file_path, '.py') then
+          --     return true
+          --   end
+          --   return false
+          -- end,
+        },
+      },
+      status = { virtual_text = true },
+      output = { open_on_run = true },
+      quickfix = {
+        open = function()
+          require('trouble').open { mode = 'quickfix', focus = false }
+        end,
+      },
+      debug = true,
+    },
+  },
+  {
     'coffebar/neovim-project',
     opts = {
       projects = { -- define project roots
@@ -115,38 +147,6 @@ return {
 
       vim.keymap.set('n', '<leader>so', require('telescope').extensions.orgmode.search_headings, { desc = '[S]earch [O]rgmode' })
     end,
-  },
-  {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-neotest/nvim-nio',
-      'nvim-lua/plenary.nvim',
-      'antoinemadec/FixCursorHold.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    opts = {
-      adapters = {
-        ['neotest-python'] = {
-          dap = { justMyCode = false },
-          args = { '--log-level', 'DEBUG', '--verbose', '-s' },
-          runner = 'pytest',
-          -- is_test_file = function(file_path)
-          --   if string.find(file_path, 'test') and vim.endswith(file_path, '.py') then
-          --     return true
-          --   end
-          --   return false
-          -- end,
-        },
-      },
-      status = { virtual_text = true },
-      output = { open_on_run = true },
-      quickfix = {
-        open = function()
-          require('trouble').open { mode = 'quickfix', focus = false }
-        end,
-      },
-      debug = true,
-    },
   },
   {
     'ray-x/lsp_signature.nvim',
