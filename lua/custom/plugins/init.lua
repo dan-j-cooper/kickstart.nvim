@@ -55,8 +55,12 @@ return {
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
   },
   {
+<<<<<<< HEAD
     'folke/trouble.nvim',
     cmd = 'Trouble',
+=======
+    'nvim-neotest/neotest-python',
+>>>>>>> 88554de (updates)
   },
   {
     'ThePrimeagen/refactoring.nvim',
@@ -69,6 +73,7 @@ return {
     end,
   },
   {
+<<<<<<< HEAD
     'fredeeb/tardis.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
@@ -78,7 +83,27 @@ return {
         ['prev'] = '<C-w>',
       },
     },
+=======
+    'emmanueltouzery/agitator.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
+>>>>>>> 88554de (updates)
   },
+  -- {
+  --   'fredeeb/tardis.nvim',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   config = true,
+  --   opts = {
+  --     keymap = {
+  --       ['next'] = '<C-y>',
+  --       ['prev'] = '<C-h>',
+  --       ['quit'] = 'q', -- quit all
+  --       ['revision_message'] = '<C-m>', -- show revision message for current revision
+  --       ['commit'] = '<C-g>', -- replace contents of origin buffer with contents of tardis buffer
+  --     },
+  --     initial_revisions = 10, -- initial revisions to create buffers for
+  --     max_revisions = 256, -- max number of revisions to load
+  --   },
+  -- },
   {
     'rmagatti/auto-session',
     lazy = false,
@@ -112,6 +137,22 @@ return {
       --   ignore_install = { 'org' },
       -- })
     end,
+<<<<<<< HEAD
+=======
+  },
+  {
+    'nvim-orgmode/telescope-orgmode.nvim',
+    event = 'VeryLazy',
+    dependencies = {
+      'nvim-orgmode/orgmode',
+      'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+      require('telescope').load_extension 'orgmode'
+
+      vim.keymap.set('n', '<leader>so', require('telescope').extensions.orgmode.search_headings, { desc = '[S]earch [O]rgmode' })
+    end,
+>>>>>>> 88554de (updates)
   },
   {
     'nvim-orgmode/telescope-orgmode.nvim',
@@ -208,9 +249,12 @@ return {
     'michaelb/sniprun',
   },
   {
+<<<<<<< HEAD
     'mfussenegger/nvim-dap-python',
   },
   {
+=======
+>>>>>>> 88554de (updates)
     'nvim-neotest/neotest',
     dependencies = {
       'nvim-neotest/nvim-nio',
@@ -220,6 +264,10 @@ return {
     },
     opts = {
       adapters = {
+<<<<<<< HEAD
+=======
+        ['neotest-python'] = {},
+>>>>>>> 88554de (updates)
         ['neotest-python'] = {
           dap = { justMyCode = false },
           args = { '--log-level', 'DEBUG', '--verbose', '-s' },
@@ -320,6 +368,7 @@ return {
     version = '^5', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
+<<<<<<< HEAD
   {
     'NoahTheDuke/vim-just',
   },
@@ -332,4 +381,6 @@ return {
       vim.g.molten_output_win_max_height = 12
     end,
   },
+=======
+>>>>>>> 88554de (updates)
 }
