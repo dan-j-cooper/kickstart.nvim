@@ -55,12 +55,11 @@ return {
     -- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if prefer nvim-web-devicons
   },
   {
-<<<<<<< HEAD
     'folke/trouble.nvim',
     cmd = 'Trouble',
-=======
+  },
+  {
     'nvim-neotest/neotest-python',
->>>>>>> 88554de (updates)
   },
   {
     'ThePrimeagen/refactoring.nvim',
@@ -73,7 +72,6 @@ return {
     end,
   },
   {
-<<<<<<< HEAD
     'fredeeb/tardis.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = true,
@@ -83,10 +81,10 @@ return {
         ['prev'] = '<C-w>',
       },
     },
-=======
+  },
+  {
     'emmanueltouzery/agitator.nvim',
     dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope.nvim' },
->>>>>>> 88554de (updates)
   },
   -- {
   --   'fredeeb/tardis.nvim',
@@ -137,8 +135,6 @@ return {
       --   ignore_install = { 'org' },
       -- })
     end,
-<<<<<<< HEAD
-=======
   },
   {
     'nvim-orgmode/telescope-orgmode.nvim',
@@ -152,7 +148,6 @@ return {
 
       vim.keymap.set('n', '<leader>so', require('telescope').extensions.orgmode.search_headings, { desc = '[S]earch [O]rgmode' })
     end,
->>>>>>> 88554de (updates)
   },
   {
     'nvim-orgmode/telescope-orgmode.nvim',
@@ -169,7 +164,7 @@ return {
   },
   {
     'nvim-neotest/neotest-python',
-  }
+  },
   {
     'nvim-neotest/neotest',
     dependencies = {
@@ -249,12 +244,9 @@ return {
     'michaelb/sniprun',
   },
   {
-<<<<<<< HEAD
     'mfussenegger/nvim-dap-python',
   },
   {
-=======
->>>>>>> 88554de (updates)
     'nvim-neotest/neotest',
     dependencies = {
       'nvim-neotest/nvim-nio',
@@ -264,10 +256,7 @@ return {
     },
     opts = {
       adapters = {
-<<<<<<< HEAD
-=======
         ['neotest-python'] = {},
->>>>>>> 88554de (updates)
         ['neotest-python'] = {
           dap = { justMyCode = false },
           args = { '--log-level', 'DEBUG', '--verbose', '-s' },
@@ -368,7 +357,6 @@ return {
     version = '^5', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
-<<<<<<< HEAD
   {
     'NoahTheDuke/vim-just',
   },
@@ -381,6 +369,4 @@ return {
       vim.g.molten_output_win_max_height = 12
     end,
   },
-=======
->>>>>>> 88554de (updates)
 }

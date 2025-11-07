@@ -97,15 +97,12 @@ vim.keymap.set('n', '<F8>', SendRedoToTerminal, { desc = 'redo last' })
 -- ctrlsf, find and replace
 vim.keymap.set('n', '<leader>fr', '<Plug>CtrlSFPrompt', { desc = 'find and replace' })
 
-<<<<<<< HEAD
 -- tardis
 vim.keymap.set('n', '<leader>gt', ':Tardis <CR>', { desc = 'git time machine' })
-=======
 vim.keymap.set('n', '<leader>fr', '<Plug>CtrlSFPrompt', { desc = 'find and replace' })
 
 -- time machine
 vim.keymap.set('n', '<leader>gt', require('agitator').git_time_machine, { desc = 'git time machine' })
->>>>>>> 88554de (updates)
 
 -- portal jumplist
 vim.keymap.set('n', '<leader>o', '<cmd>Portal jumplist backward<cr>')
@@ -113,9 +110,3 @@ vim.keymap.set('n', '<leader>i', '<cmd>Portal jumplist forward<cr>')
 
 -- set default fold
 vim.opt.foldlevel = 5
-
-<<<<<<< HEAD
--- TODO: fix this
-=======
->>>>>>> 88554de (updates)
-vim.fn.setreg('f', 'ea=}"bbif"{')

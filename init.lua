@@ -728,10 +728,7 @@ require('lazy').setup({
             autoSearchPaths = true,
             useLibraryCodeForTypes = true,
             diagnosticMode = 'workspace',
-<<<<<<< HEAD
-=======
             logLevel = 'Trace',
->>>>>>> 88554de (updates)
             typeCheckingMode = 'standard',
           },
           on_attach = function(client)
@@ -760,11 +757,8 @@ require('lazy').setup({
             client.server_capabilities.renameProvider = false
           end,
         },
-<<<<<<< HEAD
         ruff = {},
         rust_analyzer = {},
-=======
->>>>>>> 88554de (updates)
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -1179,14 +1173,11 @@ require('lazy').setup({
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   { import = 'custom.plugins' },
-<<<<<<< HEAD
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-=======
->>>>>>> 88554de (updates)
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -1230,10 +1221,7 @@ vim.o.shiftwidth = 4
 vim.o.tabstop = 8
 vim.o.softtabstop = 0
 
-<<<<<<< HEAD
 -- Generate comment for current line
-=======
->>>>>>> 88554de (updates)
 require('telescope').load_extension 'luasnip'
 require('luasnip.loaders.from_snipmate').load { paths = '~/.config/nvim/snippets' }
 -- bugfix?
