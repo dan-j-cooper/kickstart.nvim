@@ -96,6 +96,11 @@ local function run_vim_command()
   local txt = vim.fn.getreg '"'
   vim.cmd(':"' .. txt .. '"')
 end
+-- local function run_vim_command()
+--   vim.cmd 'normal! y'
+--   local txt = vim.fn.getreg '"'
+--   vim.cmd(':"' .. txt .. '"')
+-- end
 
 vim.keymap.set('x', '<leader>es', ":<C-u>'<,'>w !sh<CR>", { noremap = true, silent = true })
 --vim.keymap.set('x', '<leader>ec', run_vim_command, { noremap = true, silent = false })
@@ -136,8 +141,8 @@ end)
 -- Enable break indent
 vim.o.breakindent = true
 
--- Save undo history
-vim.o.undofile = true
+-- Save undo historylua
+vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
@@ -260,7 +265,7 @@ rtp:prepend(lazypath)
 --    :Lazy update
 --
 -- NOTE: Here is where you install your plugins.
-require('lazy').setup({
+require('lazy').setup {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
 
@@ -286,6 +291,7 @@ require('lazy').setup({
   -- options to `gitsigns.nvim`.
   --
   -- See `:help gitsigns` to understand what the configuration keys do
+
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -790,6 +796,11 @@ require('lazy').setup({
             },
           },
         },
+
+        bashls = {
+          cmd = { 'bash-language-server', 'start' },
+          filetypes = { 'sh' },
+        },
       }
       -- Ensure the servers and tools above are installed
       --
@@ -1178,7 +1189,7 @@ require('lazy').setup({
   -- Or use telescope!
   -- In normal mode type `<space>sh` then write `lazy.nvim-plugin`
   -- you can continue same window with `<space>sr` which resumes last telescope search
-}, {
+  --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
@@ -1198,7 +1209,7 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
-})
+}
 
 vim.lsp.config('basedpyright', {
   settings = {
@@ -1222,7 +1233,6 @@ vim.o.tabstop = 8
 vim.o.softtabstop = 0
 
 -- Generate comment for current line
-require('telescope').load_extension 'luasnip'
 require('luasnip.loaders.from_snipmate').load { paths = '~/.config/nvim/snippets' }
 -- bugfix?
 vim.keymap.set('n', 's', '<Nop>', { noremap = true })
